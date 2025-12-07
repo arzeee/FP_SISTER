@@ -1,0 +1,64 @@
+version: '3'
+services:
+  # --- Node Data: 1 Master & 1 Replica ---
+  redis-master:
+    image: bitnami/redis:latest
+    container_name: redis-master
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=password123
+    ports:
+      - '6379:6379'
+
+  redis-replica:
+    image: bitnami/redis:latest
+    container_name: redis-replica
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PASSWORD=password123
+      - REDIS_PASSWORD=password123
+    ports:
+      - '6380:6379'
+    depends_on:
+      - redis-master
+
+  # --- Node Sentinel: 3 Satpam ---
+  sentinel-1:
+    image: bitnami/redis-sentinel:latest
+    container_name: sentinel-1
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PASSWORD=password123
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis-master
+      - redis-replica
+
+  sentinel-2:
+    image: bitnami/redis-sentinel:latest
+    container_name: sentinel-2
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PASSWORD=password123
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis-master
+      - redis-replica
+
+  sentinel-3:
+    image: bitnami/redis-sentinel:latest
+    container_name: sentinel-3
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PASSWORD=password123
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    depends_on:
+      - redis-master
+      - redis-replica
