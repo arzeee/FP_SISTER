@@ -52,4 +52,6 @@ docker logs -f sentinel-1
 docker stop redis-master
 ```
 ## 5. Verifikasi Master Baru
+```
 docker exec -it sentinel-1 redis-cli -p 26379 sentinel get-master-addr-by-name mymaster
+```
