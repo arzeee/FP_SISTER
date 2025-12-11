@@ -1,64 +1,176 @@
 version: '3'
+
 services:
-  # --- Node Data: 1 Master & 1 Replica ---
+  # --- Master ---
   redis-master:
     image: bitnami/redis:latest
     container_name: redis-master
     environment:
       - REDIS_REPLICATION_MODE=master
-      - REDIS_PASSWORD=password123
+      - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - '6379:6379'
 
-  redis-replica:
+  # --- Replicas (10 total) ---
+  redis-replica-1:
     image: bitnami/redis:latest
-    container_name: redis-replica
+    container_name: redis-replica-1
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PASSWORD=password123
-      - REDIS_PASSWORD=password123
+      - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - '6380:6379'
     depends_on:
       - redis-master
 
-  # --- Node Sentinel: 3 Satpam ---
-  sentinel-1:
-    image: bitnami/redis-sentinel:latest
-    container_name: sentinel-1
+  redis-replica-2:
+    image: bitnami/redis:latest
+    container_name: redis-replica-2
     environment:
-      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PASSWORD=password123
-      - REDIS_MASTER_SET=mymaster
-      - REDIS_SENTINEL_QUORUM=2
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6381:6379'
     depends_on:
       - redis-master
-      - redis-replica
 
-  sentinel-2:
-    image: bitnami/redis-sentinel:latest
-    container_name: sentinel-2
+  redis-replica-3:
+    image: bitnami/redis:latest
+    container_name: redis-replica-3
     environment:
-      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PASSWORD=password123
-      - REDIS_MASTER_SET=mymaster
-      - REDIS_SENTINEL_QUORUM=2
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6382:6379'
     depends_on:
       - redis-master
-      - redis-replica
 
-  sentinel-3:
-    image: bitnami/redis-sentinel:latest
-    container_name: sentinel-3
+  redis-replica-4:
+    image: bitnami/redis:latest
+    container_name: redis-replica-4
     environment:
-      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-master
-      - REDIS_MASTER_PASSWORD=password123
-      - REDIS_MASTER_SET=mymaster
-      - REDIS_SENTINEL_QUORUM=2
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6383:6379'
     depends_on:
       - redis-master
-      - redis-replica
+
+  redis-replica-5:
+    image: bitnami/redis:latest
+    container_name: redis-replica-5
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6384:6379'
+    depends_on:
+      - redis-master
+
+  redis-replica-6:
+    image: bitnami/redis:latest
+    container_name: redis-replica-6
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6385:6379'
+    depends_on:
+      - redis-master
+
+  redis-replica-7:
+    image: bitnami/redis:latest
+    container_name: redis-replica-7
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6386:6379'
+    depends_on:
+      - redis-master
+
+  redis-replica-8:
+    image: bitnami/redis:latest
+    container_name: redis-replica-8
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6387:6379'
+    depends_on:
+      - redis-master
+
+  redis-replica-9:
+    image: bitnami/redis:latest
+    container_name: redis-replica-9
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6388:6379'
+    depends_on:
+      - redis-master
+
+  redis-replica-10:
+    image: bitnami/redis:latest
+    container_name: redis-replica-10
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6389:6379'
+    depends_on:
+      - redis-master
+
+  # --- Sentinel Nodes ---
+  redis-sentinel-1:
+    image: bitnami/redis-sentinel:latest
+    container_name: redis-sentinel-1
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_SENTINEL_FAILOVER_TIMEOUT=5000
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    ports:
+      - '26379:26379'
+    depends_on:
+      - redis-master
+
+  redis-sentinel-2:
+    image: bitnami/redis-sentinel:latest
+    container_name: redis-sentinel-2
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_SENTINEL_FAILOVER_TIMEOUT=5000
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    ports:
+      - '26380:26379'
+    depends_on:
+      - redis-master
+
+  redis-sentinel-3:
+    image: bitnami/redis-sentinel:latest
+    container_name: redis-sentinel-3
+    environment:
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=5000
+      - REDIS_SENTINEL_FAILOVER_TIMEOUT=5000
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_SENTINEL_QUORUM=2
+    ports:
+      - '26381:26379'
+    depends_on:
+      - redis-master

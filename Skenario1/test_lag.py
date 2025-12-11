@@ -5,11 +5,11 @@ import time
 master = redis.Redis(host='localhost', port=6379, decode_responses=True)
 replica = redis.Redis(host='localhost', port=6380, decode_responses=True)
 
-print("--- Memulai Skenario 1: 1000 Writes ---")
 
 missed_keys = 0
-total_keys = 100000
+total_keys = 1000
 
+print("--- Memulai Skenario 1: {total_keys} Writes ---")
 start_time = time.time()
 
 for i in range(total_keys):
