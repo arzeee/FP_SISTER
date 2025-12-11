@@ -37,4 +37,21 @@ python scenario2_failover.py
 docker stop redis-master
 ```
 
+# SKENARIO 3
+
+## Jalankan Container
+```
+docker-compose -f docker-compose-cluster.yml up -d
+```
+
+## Jalankan untuk buat cluster
+```
+./init_cluster.sh
+```
+
+## Buka terminal lain dan matikan master
+```
+docker run -it --rm   --network skenario3_redis-cluster-net   -v "$PWD":/app   -w /app   python:3.9-slim   sh -c "pip install redis && python test_sharding.py"
+```
+
 
