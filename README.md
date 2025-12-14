@@ -44,6 +44,11 @@ docker stop redis-master
 docker-compose -f docker-compose-cluster.yml up -d
 ```
 
+## Cek Cluster (pastikan sudah enable=1)
+```
+docker exec -it redis-node-1 redis-cli info cluster
+```
+
 ## Jalankan untuk buat cluster
 ```
 ./init_cluster.sh
