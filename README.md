@@ -32,7 +32,7 @@ docker-compose -f docker-compose-sentinel.yml up -d
 docker run -it --rm --network skenario2_redisnet -v "$PWD":/app -w /app python:3.9-slim bash
 ```
 
-## Install redis jika belum
+## Install redis
 ```
 pip install redis
 ```
