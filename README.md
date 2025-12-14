@@ -27,6 +27,16 @@ docker-compose -f docker-compose-replication.yml down
 docker-compose -f docker-compose-sentinel.yml up -d
 ```
 
+## Masuk ke Network Container
+```
+docker run -it --rm --network skenario2_redisnet -v "$PWD":/app -w /app python:3.9-slim bash
+```
+
+## Install redis jika belum
+```
+pip install redis
+```
+
 ## Jalankan Python
 ```
 python scenario2_failover.py
