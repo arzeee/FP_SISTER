@@ -56,7 +56,7 @@ docker-compose -f docker-compose-cluster.yml up -d
 
 ## Cek Cluster
 ```
-docker exec -it redis-node-1 redis-cli info cluster
+docker exec -it redis-node-1 redis-cli cluster nodes
 ```
 
 ## Jalankan untuk buat cluster
