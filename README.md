@@ -69,4 +69,23 @@ docker exec -it redis-node-1 redis-cli cluster nodes
 docker run -it --rm   --network skenario3_redis-cluster-net   -v "$PWD":/app   -w /app   python:3.9-slim   sh -c "pip install redis && python test_sharding.py"
 ```
 
+## Test Failover (Jika Master1 mati)
+### Matikan Node 1
+```
+docker stop redis-node-1
+```
+### lalu cek node1 haruse mati dan replika node1 (biasanya node5) dia jadi master
+```
+docker exec -it redis-node-1 redis-cli cluster nodes
+```
+Lalu cek node5 (biasanya replika dari node 1) jika bukan bisa coba node-node lain selain node 1, 2 dan 3. Untuk cek cari baris myself, itu merupakan inisisasi node yang kamu panggil
+```
+docker exec -it redis-node-5 redis-cli cluster nodes
+```
+### Jalankan kode python failover
+```
+docker run -it --rm   --network skenario3_redis-cluster-net   -v "$PWD":/app   -w /app   python:3.9-slim   sh -c "pip install redis && python test_shardingfailover.py"
+```
+
+
 
